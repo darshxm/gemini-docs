@@ -3,7 +3,17 @@
 Small package for mirroring selected Gemini API docs into local markdown and
 Python modules, plus an MCP server for agent lookup.
 
-## Install and sync
+## Install
+
+Install from GitHub:
+
+```bash
+pip install "git+https://github.com/darshxm/gemini-docs.git"
+pip install "git+ssh://git@github.com/darshxm/gemini-docs.git"
+gemini-docs sync
+```
+
+For local development:
 
 ```bash
 pip install -e .
