@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gemini-docs"
+version = "0.1.0"
+description = "Download Gemini API docs snapshots and expose them as importable Python modules."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+  "beautifulsoup4>=4.12",
+  "mcp>=1.26.0",
+  "requests>=2.31",
+]
+
+[project.optional-dependencies]
+dev = [
+  "ruff>=0.15.8",
+]
+
+[project.scripts]
+gemini-docs = "gemini_docs.__main__:main"
+gemini-docs-mcp = "gemini_docs.mcp_server:main"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["gemini_docs*"]
+
+[tool.setuptools.package-data]
+gemini_docs = ["markdown/*.md"]
+
+[tool.ruff]
+target-version = "py310"
+extend-exclude = [
+  "gemini_docs/docs",
+]
+
+[tool.ruff.lint]
+select = [
+  "E",
+  "F",
+  "I",
+]
