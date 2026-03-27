@@ -57,4 +57,9 @@ GitHub Actions runs:
 - `ruff format --check .`
 - import smoke checks
 - `python -m compileall gemini_docs main.py`
-```
+
+## Scheduled updates
+
+GitHub Actions also includes a scheduled workflow that refreshes the mirrored
+docs every Monday at `07:00 UTC`, which is `08:00 CET` in winter, and can also
+be run manually from the Actions tab.
