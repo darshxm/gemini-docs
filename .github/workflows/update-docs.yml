@@ -5,6 +5,9 @@ on:
     - cron: "0 7 * * 1"
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   update-docs:
     runs-on: ubuntu-latest
@@ -47,7 +50,7 @@ jobs:
 
       - name: Push changes
         run: |
-          if git diff --cached --quiet && git diff --quiet; then
+          if git diff --quiet HEAD origin/${{ github.ref_name }}; then
             echo "Nothing to push"
             exit 0
           fi
