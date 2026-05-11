@@ -56,8 +56,7 @@ JSON Schema types like `object`, `array`, `string`, and `integer`.
         model="gemini-3-flash-preview",
         contents=prompt,
         config={
-            "response_mime_type": "application/json",
-            "response_json_schema": Recipe.model_json_schema(),
+            "response_format": {"text": {"mime_type": "application/json", "schema": Recipe.model_json_schema()}},
         },
     )
     
@@ -93,8 +92,7 @@ concatenated to form the final, complete JSON object.
         model="gemini-3-flash-preview",
         contents=prompt,
         config={
-            "response_mime_type": "application/json",
-            "response_json_schema": Feedback.model_json_schema(),
+            "response_format": {"text": {"mime_type": "application/json", "schema": Feedback.model_json_schema()}},
         },
     )
     
@@ -134,8 +132,7 @@ Gemini 3 lets you combine Structured Outputs with built-in tools, including
                 {"google_search": {}},
                 {"url_context": {}}
             ],
-            "response_mime_type": "application/json",
-            "response_json_schema": MatchResult.model_json_schema(),
+            "response_format": {"text": {"mime_type": "application/json", "schema": MatchResult.model_json_schema()}},
         },  
     )
     
@@ -145,7 +142,7 @@ Gemini 3 lets you combine Structured Outputs with built-in tools, including
 
 ## JSON schema support
 
-To generate a JSON object, set the `response_mime_type` in the generation configuration to `application/json` and provide a `response_json_schema`. The schema must be a valid [JSON Schema](https://json-schema.org/) that describes the desired output format.
+To generate a JSON object, set the `response_format` in the generation configuration. The schema must be a valid [JSON Schema](https://json-schema.org/) that describes the desired output format.
 
 The model will then generate a response that is a syntactically valid JSON string matching the provided schema. When using structured outputs, the model will produce outputs in the same order as the keys in the schema.
 
