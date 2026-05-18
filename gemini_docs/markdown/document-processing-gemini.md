@@ -21,58 +21,7 @@ improve request latency and reduce bandwidth usage.
 The following example shows you how to fetch a PDF from a URL and convert it to
 bytes for processing:
 
-### Python
-
-    from google import genai
-    from google.genai import types
-    import httpx
-    
-    client = genai.Client()
-    
-    doc_url = "https://discovery.ucl.ac.uk/id/eprint/10089234/1/343019_3_art_0_py4t4l_convrt.pdf"
-    
-    # Retrieve and encode the PDF byte
-    doc_data = httpx.get(doc_url).content
-    
-    prompt = "Summarize this document"
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[
-            types.Part.from_bytes(
-                data=doc_data,
-                mime_type='application/pdf',
-            ),
-            prompt
-        ]
-    )
-    
-    print(response.text)
-    
-
 You can also read a PDF from a local file for processing:
-
-### Python
-
-    from google import genai
-    from google.genai import types
-    import pathlib
-    
-    client = genai.Client()
-    
-    # Retrieve and encode the PDF byte
-    filepath = pathlib.Path('file.pdf')
-    
-    prompt = "Summarize this document"
-    response = client.models.generate_content(
-      model="gemini-3-flash-preview",
-      contents=[
-          types.Part.from_bytes(
-            data=filepath.read_bytes(),
-            mime_type='application/pdf',
-          ),
-          prompt])
-    print(response.text)
-    
 
 ## Uploading PDFs using the Files API
 
@@ -86,121 +35,17 @@ bandwidth usage by decoupling the file upload from the model requests.
 
 Use the File API to simplify uploading and processing large PDF files from URLs:
 
-### Python
-
-    from google import genai
-    from google.genai import types
-    import io
-    import httpx
-    
-    client = genai.Client()
-    
-    long_context_pdf_path = "https://www.nasa.gov/wp-content/uploads/static/history/alsj/a17/A17_FlightPlan.pdf"
-    
-    # Retrieve and upload the PDF using the File API
-    doc_io = io.BytesIO(httpx.get(long_context_pdf_path).content)
-    
-    sample_doc = client.files.upload(
-      # You can pass a path or a file-like object here
-      file=doc_io,
-      config=dict(
-        mime_type='application/pdf')
-    )
-    
-    prompt = "Summarize this document"
-    
-    response = client.models.generate_content(
-      model="gemini-3-flash-preview",
-      contents=[sample_doc, prompt])
-    print(response.text)
-    
-
 ### Large PDFs stored locally
-
-### Python
-
-    from google import genai
-    from google.genai import types
-    import pathlib
-    import httpx
-    
-    client = genai.Client()
-    
-    # Retrieve and encode the PDF byte
-    file_path = pathlib.Path('large_file.pdf')
-    
-    # Upload the PDF using the File API
-    sample_file = client.files.upload(
-        file=file_path,
-    )
-    
-    prompt="Summarize this document"
-    
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[sample_file, "Summarize this document"])
-    print(response.text)
-    
 
 You can verify the API successfully stored the uploaded file and get its
 metadata by calling [`files.get`](https://ai.google.dev/api/rest/v1beta/files/get). Only the `name`
 (and by extension, the `uri`) are unique.
-
-### Python
-
-    from google import genai
-    import pathlib
-    
-    client = genai.Client()
-    
-    fpath = pathlib.Path('example.txt')
-    fpath.write_text('hello')
-    
-    file = client.files.upload(file='example.txt')
-    
-    file_info = client.files.get(name=file.name)
-    print(file_info.model_dump_json(indent=4))
-    
 
 ## Passing multiple PDFs
 
 The Gemini API is capable of processing multiple PDF documents (up to 1000 pages)
 in a single request, as long as the combined size of the documents and the text
 prompt stays within the model's context window.
-
-### Python
-
-    from google import genai
-    import io
-    import httpx
-    
-    client = genai.Client()
-    
-    doc_url_1 = "https://arxiv.org/pdf/2312.11805"
-    doc_url_2 = "https://arxiv.org/pdf/2403.05530"
-    
-    # Retrieve and upload both PDFs using the File API
-    doc_data_1 = io.BytesIO(httpx.get(doc_url_1).content)
-    doc_data_2 = io.BytesIO(httpx.get(doc_url_2).content)
-    
-    sample_pdf_1 = client.files.upload(
-      file=doc_data_1,
-      config=dict(mime_type='application/pdf')
-    )
-    sample_pdf_2 = client.files.upload(
-      file=doc_data_2,
-      config=dict(mime_type='application/pdf')
-    )
-    
-    prompt = "What is the difference between each of the main benchmarks between these two papers? Output these in a table."
-    
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=[sample_pdf_1, sample_pdf_2, prompt]
-    )
-    
-    print(response.text)
-    
 
 ## Technical details
 

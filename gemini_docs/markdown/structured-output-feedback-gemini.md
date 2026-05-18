@@ -20,42 +20,6 @@ Recursive Structures
 This example showcases `anyOf` for conditional schemas and `enum` for
 classification, allowing the output structure to vary based on the content.
 
-### Python
-
-    from google import genai
-    from pydantic import BaseModel, Field
-    from typing import Union, Literal
-    
-    class SpamDetails(BaseModel):
-        reason: str = Field(description="The reason why the content is considered spam.")
-        spam_type: Literal["phishing", "scam", "unsolicited promotion", "other"] = Field(description="The type of spam.")
-    
-    class NotSpamDetails(BaseModel):
-        summary: str = Field(description="A brief summary of the content.")
-        is_safe: bool = Field(description="Whether the content is safe for all audiences.")
-    
-    class ModerationResult(BaseModel):
-        decision: Union[SpamDetails, NotSpamDetails]
-    
-    client = genai.Client()
-    
-    prompt = """
-    Please moderate the following content and provide a decision.
-    Content: 'Congratulations! You''ve won a free cruise to the Bahamas. Click here to claim your prize: www.definitely-not-a-scam.com'
-    """
-    
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=prompt,
-        config={
-            "response_format": {"text": {"mime_type": "application/json", "schema": ModerationResult.model_json_schema()}},
-        },
-    )
-    
-    result = ModerationResult.model_validate_json(response.text)
-    print(result)
-    
-
 **Example Response:**
 
 ## Streaming
@@ -67,31 +31,6 @@ to be complete. This can improve the perceived performance of your application.
 The streamed chunks will be valid partial JSON strings, which can be
 concatenated to form the final, complete JSON object.
 
-### Python
-
-    from google import genai
-    from pydantic import BaseModel, Field
-    from typing import Literal
-    
-    class Feedback(BaseModel):
-        sentiment: Literal["positive", "neutral", "negative"]
-        summary: str
-    
-    client = genai.Client()
-    prompt = "The new UI is incredibly intuitive and visually appealing. Great job. Add a very long summary to test streaming!"
-    
-    response_stream = client.models.generate_content_stream(
-        model="gemini-3-flash-preview",
-        contents=prompt,
-        config={
-            "response_format": {"text": {"mime_type": "application/json", "schema": Feedback.model_json_schema()}},
-        },
-    )
-    
-    for chunk in response_stream:
-        print(chunk.candidates[0].content.parts[0].text)
-    
-
 ## Structured outputs with tools
 
 **Preview:** This feature is available only to Gemini 3 series models, `gemini-3.1-pro-preview` and `gemini-3-flash-preview`.
@@ -102,35 +41,6 @@ Gemini 3 lets you combine Structured Outputs with built-in tools, including
 [Code Execution](https://ai.google.dev/gemini-api/docs/code-execution),
 [File Search](https://ai.google.dev/gemini-api/docs/file-search#structured-output), and
 [Function Calling](https://ai.google.dev/gemini-api/docs/function-calling).
-
-### Python
-
-    from google import genai
-    from pydantic import BaseModel, Field
-    from typing import List
-    
-    class MatchResult(BaseModel):
-        winner: str = Field(description="The name of the winner.")
-        final_match_score: str = Field(description="The final match score.")
-        scorers: List[str] = Field(description="The name of the scorer.")
-    
-    client = genai.Client()
-    
-    response = client.models.generate_content(
-        model="gemini-3.1-pro-preview",
-        contents="Search for all details for the latest Euro.",
-        config={
-            "tools": [
-                {"google_search": {}},
-                {"url_context": {}}
-            ],
-            "response_format": {"text": {"mime_type": "application/json", "schema": MatchResult.model_json_schema()}},
-        },  
-    )
-    
-    result = MatchResult.model_validate_json(response.text)
-    print(result)
-    
 
 ## JSON schema support
 

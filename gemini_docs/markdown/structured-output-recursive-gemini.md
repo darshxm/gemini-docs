@@ -20,40 +20,6 @@ Recursive Structures
 This example illustrates how to define a recursive schema such as an organization
 chart.
 
-### Python
-
-    from google import genai
-    from pydantic import BaseModel, Field
-    from typing import List
-    
-    class Employee(BaseModel):
-        """Represents an employee in an organization."""
-        name: str
-        employee_id: int
-        reports: List["Employee"] = Field(
-            default_factory=list,
-            description="A list of employees reporting to this employee."
-        )
-    
-    client = genai.Client()
-    
-    prompt = """
-    Generate an organization chart for a small team.
-    The manager is Alice, who manages Bob and Charlie. Bob manages David.
-    """
-    
-    response = client.models.generate_content(
-        model="gemini-3-flash-preview",
-        contents=prompt,
-        config={
-            "response_format": {"text": {"mime_type": "application/json", "schema": Employee.model_json_schema()}},
-        },
-    )
-    
-    employee = Employee.model_validate_json(response.text)
-    print(employee)
-    
-
 **Example Response:**
 
 ## Streaming
@@ -65,31 +31,6 @@ to be complete. This can improve the perceived performance of your application.
 The streamed chunks will be valid partial JSON strings, which can be
 concatenated to form the final, complete JSON object.
 
-### Python
-
-    from google import genai
-    from pydantic import BaseModel, Field
-    from typing import Literal
-    
-    class Feedback(BaseModel):
-        sentiment: Literal["positive", "neutral", "negative"]
-        summary: str
-    
-    client = genai.Client()
-    prompt = "The new UI is incredibly intuitive and visually appealing. Great job. Add a very long summary to test streaming!"
-    
-    response_stream = client.models.generate_content_stream(
-        model="gemini-3-flash-preview",
-        contents=prompt,
-        config={
-            "response_format": {"text": {"mime_type": "application/json", "schema": Feedback.model_json_schema()}},
-        },
-    )
-    
-    for chunk in response_stream:
-        print(chunk.candidates[0].content.parts[0].text)
-    
-
 ## Structured outputs with tools
 
 **Preview:** This feature is available only to Gemini 3 series models, `gemini-3.1-pro-preview` and `gemini-3-flash-preview`.
@@ -100,35 +41,6 @@ Gemini 3 lets you combine Structured Outputs with built-in tools, including
 [Code Execution](https://ai.google.dev/gemini-api/docs/code-execution),
 [File Search](https://ai.google.dev/gemini-api/docs/file-search#structured-output), and
 [Function Calling](https://ai.google.dev/gemini-api/docs/function-calling).
-
-### Python
-
-    from google import genai
-    from pydantic import BaseModel, Field
-    from typing import List
-    
-    class MatchResult(BaseModel):
-        winner: str = Field(description="The name of the winner.")
-        final_match_score: str = Field(description="The final match score.")
-        scorers: List[str] = Field(description="The name of the scorer.")
-    
-    client = genai.Client()
-    
-    response = client.models.generate_content(
-        model="gemini-3.1-pro-preview",
-        contents="Search for all details for the latest Euro.",
-        config={
-            "tools": [
-                {"google_search": {}},
-                {"url_context": {}}
-            ],
-            "response_format": {"text": {"mime_type": "application/json", "schema": MatchResult.model_json_schema()}},
-        },  
-    )
-    
-    result = MatchResult.model_validate_json(response.text)
-    print(result)
-    
 
 ## JSON schema support
 
