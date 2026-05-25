@@ -33,7 +33,7 @@ concatenated to form the final, complete JSON object.
 
 ## Structured outputs with tools
 
-**Preview:** This feature is available only to Gemini 3 series models, `gemini-3.1-pro-preview` and `gemini-3-flash-preview`.
+**Preview:** This feature is available only to Gemini 3 series models, `gemini-3.1-pro-preview` and `gemini-3.5-flash`.
 
 Gemini 3 lets you combine Structured Outputs with built-in tools, including
 [Grounding with Google Search](https://ai.google.dev/gemini-api/docs/google-search),
