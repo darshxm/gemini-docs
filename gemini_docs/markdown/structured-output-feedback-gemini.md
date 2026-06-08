@@ -13,12 +13,24 @@ make it easy to define schemas using
 [Pydantic](https://docs.pydantic.dev/latest/) (Python) and
 [Zod](https://zod.dev/) (JavaScript).
 
-Recipe Extractor
-Content Moderation
-Recursive Structures
+## Structured output examples
+
+### Recipe Extractor
+
+This example demonstrates how to extract structured data from text using basic
+JSON Schema types like `object`, `array`, `string`, and `integer`.
+
+**Example Response:**
+
+### Content Moderation
 
 This example showcases `anyOf` for conditional schemas and `enum` for
 classification, allowing the output structure to vary based on the content.
+
+### Recursive Structures
+
+This example illustrates how to define a recursive schema such as an organization
+chart.
 
 **Example Response:**
 

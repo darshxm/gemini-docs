@@ -1,18 +1,28 @@
+**Important:** Gemini 3 model APIs now generate a unique `id` for every function call. If you are manually constructing the conversation history or using the REST API, when returning the result of your executed function to the model we recommend passing the matching `id` in your `functionResponse`. If you are using the standard Python or Node.js SDKs, this is handled automatically.
+
 Function calling lets you connect models to external tools and APIs.
 Instead of generating text responses, the model determines when to call specific
 functions and provides the necessary parameters to execute real-world actions.
 This allows the model to act as a bridge between natural language and real-world
 actions and data. Function calling has 3 primary use cases:
 
-- **Augment Knowledge:** Access information from external sources like databases, APIs, and knowledge bases.
-- **Extend Capabilities:** Use external tools to perform computations and extend the limitations of the model, such as using a calculator or creating charts.
-- **Take Actions:** Interact with external systems using APIs, such as scheduling appointments, creating invoices, sending emails, or controlling smart home devices.
+- [**Take Actions:**](#meeting) Interact with external systems using APIs, such as scheduling appointments, creating invoices, sending emails, or controlling smart home devices.
+- [**Augment Knowledge:**](#weather) Access information from external sources like databases, APIs, and knowledge bases.
+- [**Extend Capabilities:**](#chart) Use external tools to perform computations and extend the limitations of the model, such as using a calculator or creating charts.
 
-**Important:** Gemini 3 model APIs now generate a unique `id` for every function call. If you are manually constructing the conversation history or using the REST API, when returning the result of your executed function to the model we recommend passing the matching `id` in your `functionResponse`. If you are using the standard Python or Node.js SDKs, this is handled automatically.
+You can browse examples of these use cases below:
 
-Get Weather
-Schedule Meeting
-Create Chart
+### Schedule Meeting
+
+This example shows how to define a function that schedules a meeting with attendees at a specific time, allowing the model to parse user requests and return structured arguments to trigger actions in external systems.
+
+### Get Weather
+
+This example shows how to define a function that retrieves temperature data for a location, enabling the model to call external APIs to answer queries requiring real-time or external information.
+
+### Create Chart
+
+This example shows how to define a function that generates a bar chart from structured data, demonstrating how the model can use external tools to perform computations or create visual assets:
 
 ## How function calling works
 
