@@ -22,9 +22,9 @@ object.
 
 The [`GenerateContentConfig`](https://ai.google.dev/api/generate-content#v1beta.GenerationConfig)
 object also lets you override default generation parameters, such as
-[temperature](https://ai.google.dev/api/generate-content#v1beta.GenerationConfig).
+[`max_output_tokens`](https://ai.google.dev/api/generate-content#v1beta.GenerationConfig).
 
-When using Gemini 3 models, we strongly recommend keeping the `temperature` at its default value of 1.0. Changing the temperature (setting it below 1.0) may lead to unexpected behavior, such as looping or degraded performance, particularly in complex mathematical or reasoning tasks.
+The `temperature`, `top_p`, and `top_k` parameters control how the model generates responses. Although you can modify these parameters, we strongly recommend keeping them at their default values for Gemini 3.x models. Changing these parameters (for example, setting the temperature below 1.0) can cause unexpected behavior, such as looping or degraded performance, particularly in complex mathematical or reasoning tasks.
 
 Refer to the [`GenerateContentConfig`](https://ai.google.dev/api/generate-content#v1beta.GenerationConfig)
 in our API reference for a complete list of configurable parameters and their
