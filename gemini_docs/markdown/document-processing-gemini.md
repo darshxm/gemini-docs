@@ -1,3 +1,5 @@
+**Note:** This version of the page covers the **Interactions API**. You can use the toggle on this page to switch to the [generateContent API version of this page](https://ai.google.dev/gemini-api/docs/generate-content/document-processing).
+
 Gemini models can process documents in PDF format, using native
 vision to understand entire document contexts. This goes beyond
 just text extraction, allowing Gemini to:
@@ -12,16 +14,16 @@ as normal text which will eliminate context like charts or formatting.
 
 ## Passing PDF data inline
 
-You can pass PDF data inline in the request to `generateContent`. This is best
+You can pass PDF data inline in the request. This is best
 suited for smaller documents or temporary processing where you don't need to
-reference the file in subsequent requests. We recommend using the [Files API](https://ai.google.dev/gemini-api/docs/document-processing#large-pdfs)
+reference the file in subsequent requests. We recommend using the
+[Files API](https://ai.google.dev/gemini-api/docs/document-processing#large-pdfs)
 for larger documents that you need to refer to in multi-turn interactions to
 improve request latency and reduce bandwidth usage.
 
-The following example shows you how to fetch a PDF from a URL and convert it to
-bytes for processing:
+The following example shows you how to pass PDF data inline:
 
-You can also read a PDF from a local file for processing:
+You can also upload a local PDF file for processing:
 
 ## Uploading PDFs using the Files API
 

@@ -1,6 +1,8 @@
-You can configure Gemini models to generate responses that adhere to a provided JSON
-Schema. This ensures predictable, type-safe results and simplifies extracting
-structured data from unstructured text.
+**Note:** This version of the page covers the **Interactions API**. You can use the toggle on this page to switch to the [generateContent API version of this page](https://ai.google.dev/gemini-api/docs/generate-content/structured-output).
+
+You can configure Gemini models to generate responses that adhere to a provided
+JSON Schema. This ensures predictable, type-safe results and simplifies
+extracting structured data from unstructured text.
 
 Using structured outputs is ideal for:
 
@@ -9,7 +11,7 @@ Using structured outputs is ideal for:
 - **Agentic workflows:** Generate structured inputs for tools or APIs.
 
 In addition to supporting JSON Schema in the REST API, the Google GenAI SDKs
-make it easy to define schemas using
+allow defining schemas using
 [Pydantic](https://docs.pydantic.dev/latest/) (Python) and
 [Zod](https://zod.dev/) (JavaScript).
 
@@ -27,25 +29,24 @@ JSON Schema types like `object`, `array`, `string`, and `integer`.
 This example showcases `anyOf` for conditional schemas and `enum` for
 classification, allowing the output structure to vary based on the content.
 
+**Example Response:**
+
 ### Recursive Structures
 
-This example illustrates how to define a recursive schema such as an organization
-chart.
+This example illustrates how to define a recursive schema such as an
+organization chart.
 
 **Example Response:**
 
-## Streaming
+## Streaming results
 
-You can stream structured outputs, which allows you to start processing the
-response as it's being generated, without having to wait for the entire output
-to be complete. This can improve the perceived performance of your application.
-
-The streamed chunks will be valid partial JSON strings, which can be
-concatenated to form the final, complete JSON object.
+You can stream structured outputs, allowing you to start processing the
+response as it's being generated. The streamed chunks are valid partial JSON
+strings that can be concatenated to form the final JSON object.
 
 ## Structured outputs with tools
 
-**Preview:** This feature is available only to Gemini 3 series models, `gemini-3.1-pro-preview` and `gemini-3.5-flash`.
+**Preview:** This feature is available only to Gemini 3 series models.
 
 Gemini 3 lets you combine Structured Outputs with built-in tools, including
 [Grounding with Google Search](https://ai.google.dev/gemini-api/docs/google-search),
@@ -56,18 +57,17 @@ Gemini 3 lets you combine Structured Outputs with built-in tools, including
 
 ## JSON schema support
 
-To generate a JSON object, set the `response_format` in the generation configuration. The schema must be a valid [JSON Schema](https://json-schema.org/) that describes the desired output format.
+To generate a JSON object, configure `response_format` with an object (or an array containing an object) of type `text` and set its `mime_type` to `application/json`. The schema should be provided in the `schema` field.
 
-The model will then generate a response that is a syntactically valid JSON string matching the provided schema. When using structured outputs, the model will produce outputs in the same order as the keys in the schema.
-
-Gemini's structured output mode supports a subset of the [JSON Schema](https://json-schema.org) specification.
+Gemini's structured output mode supports a subset of the
+[JSON Schema](https://json-schema.org/) specification.
 
 The following values of `type` are supported:
 
 - **`string`**: For text.
 - **`number`**: For floating-point numbers.
 - **`integer`**: For whole numbers.
-- **`boolean`**: For true/false values.
+- **`boolean`**: For true or false values.
 - **`object`**: For structured data with key-value pairs.
 - **`array`**: For lists of items.
 - **`null`**: To allow a property to be null, include `"null"` in the type array (e.g., `{"type": ["string", "null"]}`).
@@ -103,25 +103,17 @@ These descriptive properties help guide the model:
 - **`minItems`**: The minimum number of items in the array.
 - **`maxItems`**: The maximum number of items in the array.
 
-## Model support
-
-The following models support structured output:
-
-* Note that Gemini 2.0 requires an explicit `propertyOrdering` list within the JSON input to define the preferred structure. You can find an example in this [cookbook](https://github.com/google-gemini/cookbook/blob/main/examples/Pdf_structured_outputs_on_invoices_and_forms.ipynb).
-
-## Structured outputs vs. function calling
-
-Both structured outputs and function calling use JSON schemas, but they serve different purposes:
+## Structured outputs versus function calling
 
 ## Best practices
 
-- **Clear descriptions:** Use the `description` field in your schema to provide clear instructions to the model about what each property represents. This is crucial for guiding the model's output.
-- **Strong typing:** Use specific types (`integer`, `string`, `enum`) whenever possible. If a parameter has a limited set of valid values, use an `enum`.
-- **Prompt engineering:** Clearly state in your prompt what you want the model to do. For example, "Extract the following information from the text..." or "Classify this feedback according to the provided schema...".
-- **Validation:** While structured output guarantees syntactically correct JSON, it does not guarantee the values are semantically correct. Always validate the final output in your application code before using it.
-- **Error handling:** Implement robust error handling in your application to gracefully manage cases where the model's output, while schema-compliant, may not meet your business logic requirements.
+- **Clear descriptions:** Use the `description` field to guide the model.
+- **Strong typing:** Use specific types (`integer`, `string`, `enum`).
+- **Prompt engineering:** Clearly state what you want the model to do.
+- **Validation:** While output is syntactically correct JSON, always validate values in your application.
+- **Error handling:** Implement robust error handling for schema-compliant but semantically incorrect outputs.
 
 ## Limitations
 
-- **Schema subset:** Not all features of the JSON Schema specification are supported. The model ignores unsupported properties.
-- **Schema complexity:** The API may reject very large or deeply nested schemas. If you encounter errors, try simplifying your schema by shortening property names, reducing nesting, or limiting the number of constraints.
+- **Schema subset:** Not all JSON Schema features are supported.
+- **Schema complexity:** Very large or deeply nested schemas may be rejected.
