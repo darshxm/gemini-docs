@@ -30,8 +30,7 @@ Function calling involves a structured interaction between your application, the
 model, and external functions:
 
 This process can be repeated over multiple turns. The model supports calling
-multiple functions in a single turn ([parallel function calling](https://ai.google.dev/gemini-api/docs/function-calling#parallel_function_calling)) and in
-sequence ([compositional function calling](https://ai.google.dev/gemini-api/docs/function-calling#compositional_function_calling)).
+multiple functions in a single turn ([parallel function calling](#parallel_function_calling)) and in sequence ([compositional function calling](#compositional_function_calling)).
 
 ### Step 1: Define a function declaration
 
@@ -63,8 +62,7 @@ A function declaration is passed as a tool and includes:
 
 ## Function calling with thinking models
 
-Gemini 3 and 2.5 series models use an internal ["thinking"](https://ai.google.dev/gemini-api/docs/thinking) process that improves function calling.
-The SDKs automatically handle [thought signatures](https://ai.google.dev/gemini-api/docs/thought-signatures) for you.
+Gemini 3 series models use an internal ["thinking"](https://ai.google.dev/gemini-api/docs/thinking) process that improves function calling. The SDKs automatically handle [thought signatures](https://ai.google.dev/gemini-api/docs/thought-signatures) for you.
 
 ## Parallel function calling
 
@@ -114,7 +112,6 @@ Interactions API supports connecting to remote MCP servers to give the model acc
 When using Remote MCP, be aware of the following constraints:
 
 - **Server types**: Remote MCP only works with Streamable HTTP servers. SSE (Server-Sent Events) servers are not supported.
-- **Model support**: Remote MCP does not work with Gemini 3 models at this time. Support for Gemini 3 is coming soon.
 - **Naming**: MCP server names should not include the `-` character. Use `snake_case` server names instead.
 
 ### Example

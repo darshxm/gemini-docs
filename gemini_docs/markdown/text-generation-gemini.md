@@ -17,8 +17,6 @@ or interleaved multimodal responses, you must manually iterate over `steps`
 instead. To learn more about other media convenience properties, see the
 [Interactions overview](https://ai.google.dev/gemini-api/docs/interactions#convenience-properties).
 
-[]()
-
 ## Thinking with Gemini
 
 Gemini models often have ["thinking"](https://ai.google.dev/gemini-api/docs/interactions/thinking)
@@ -53,7 +51,7 @@ The API also supports [document](https://ai.google.dev/gemini-api/docs/interacti
 
 ## Streaming responses
 
-By default, the model returns a response only after the entire generation 
+By default, the model returns a response only after the entire generation
 process is complete.
 
 For more fluid interactions, use streaming to handle response chunks

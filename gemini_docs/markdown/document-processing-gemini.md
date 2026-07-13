@@ -70,7 +70,7 @@ high per individual media part. With this addition, the processing of PDF
 documents has been updated:
 
 For more details about the media resolution parameter, see the
-[Media resolution](https://ai.google.dev/gemini-api/docs/media-resolution) guide.
+[Media resolution](https://ai.google.dev/gemini-api/docs/interactions/media-resolution) guide.
 
 ### Document types
 
